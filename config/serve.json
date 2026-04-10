@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/spfx-serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://24gz8f.sharepoint.com/sites/test/SitePages/banne.aspx",
+      "customActions": {
+        "908679d9-15bb-45d6-bba2-11d8de868603": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "message": "🔥 It works from serve.json"
+          }
+        }
+      }
+    }
+  }
+}
