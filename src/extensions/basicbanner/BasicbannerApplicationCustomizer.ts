@@ -32,10 +32,14 @@ export default class BasicBannerApplicationCustomizer
       }
     }
 
-    const message = this.properties.message || "🔥 Banner component works";
+    const message = this.properties.message || "🔥 Styled banner works";
 
     const element = React.createElement(Banner, {
-      message
+      message,
+      visibleStartDate: "2026-04-15",
+      backgroundColor: "#330036",
+      textColor: "#AAFFE5",
+      fontSize: 18
     });
 
     ReactDom.render(element, this._topPlaceholder.domElement);

@@ -9,7 +9,7 @@
         "908679d9-15bb-45d6-bba2-11d8de868603": {
           "location": "ClientSideExtension.ApplicationCustomizer",
           "properties": {
-            "message": "🔥 It works from serve.json"
+            "message": "Welcome to {siteUrl}"
           }
         }
       }
