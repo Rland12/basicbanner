@@ -6,7 +6,7 @@ import {
 } from '@microsoft/sp-application-base';
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
-import Banner from './components/Banner/Banner';
+import Banner from './components/Banner';
 
 export default class BasicBannerApplicationCustomizer
   extends BaseApplicationCustomizer<{ message: string }> {
