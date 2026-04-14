@@ -9,7 +9,11 @@
         "908679d9-15bb-45d6-bba2-11d8de868603": {
           "location": "ClientSideExtension.ApplicationCustomizer",
           "properties": {
-            "message": "Welcome to {siteUrl}"
+            "message": "Fully configurable banner for {siteUrl}",
+            "backgroundColor": "#330036",
+            "textColor": "#AAFFE5",
+            "fontSize": 18,
+            "visibleStartDate": "2026-04-10"
           }
         }
       }

@@ -9,7 +9,13 @@ import * as ReactDom from 'react-dom';
 import Banner from './components/Banner';
 
 export default class BasicBannerApplicationCustomizer
-  extends BaseApplicationCustomizer<{ message: string }> {
+  extends BaseApplicationCustomizer<{
+    message: string;
+    backgroundColor?: string;
+    textColor?: string;
+    fontSize?: number;
+    visibleStartDate?: string;
+  }> {
 
   private _topPlaceholder: PlaceholderContent | undefined;
 
@@ -32,14 +38,12 @@ export default class BasicBannerApplicationCustomizer
       }
     }
 
-    const message = this.properties.message || "🔥 Styled banner works";
-
     const element = React.createElement(Banner, {
-      message,
-      visibleStartDate: "2026-04-15",
-      backgroundColor: "#330036",
-      textColor: "#AAFFE5",
-      fontSize: 18
+      message: this.properties.message,
+      backgroundColor: this.properties.backgroundColor,
+      textColor: this.properties.textColor,
+      fontSize: this.properties.fontSize,
+      visibleStartDate: this.properties.visibleStartDate
     });
 
     ReactDom.render(element, this._topPlaceholder.domElement);
