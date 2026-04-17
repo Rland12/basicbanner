@@ -11,7 +11,7 @@
           "properties": {
             "message": "Fully configurable banner for {siteUrl}",
             "backgroundColor": "#330036",
-            "textColor": "#AAFFE5",
+            "textColor": "white",
             "fontSize": 18,
             "visibleStartDate": "2026-04-10"
           }

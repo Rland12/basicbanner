@@ -7,6 +7,7 @@ import {
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import Banner from './components/Banner';
+import { SPHttpClient } from '@microsoft/sp-http';
 
 export default class BasicBannerApplicationCustomizer
   extends BaseApplicationCustomizer<{
@@ -28,25 +29,42 @@ export default class BasicBannerApplicationCustomizer
     return Promise.resolve();
   }
 
-  private _renderBanner = (): void => {
+  private _renderBanner = async (): Promise<void> => {
     if (!this._topPlaceholder) {
       this._topPlaceholder =
         this.context.placeholderProvider.tryCreateContent(PlaceholderName.Top);
 
-      if (!this._topPlaceholder) {
-        return;
-      }
+      if (!this._topPlaceholder) return;
     }
 
-    const element = React.createElement(Banner, {
-      message: this.properties.message,
-      backgroundColor: this.properties.backgroundColor,
-      textColor: this.properties.textColor,
-      fontSize: this.properties.fontSize,
-      visibleStartDate: this.properties.visibleStartDate
-    });
+    try {
+      const response = await this.context.spHttpClient.get(
+        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=Title,Message&$orderby=Created desc`,
+        SPHttpClient.configurations.v1
+      );
 
-    ReactDom.render(element, this._topPlaceholder.domElement);
+      const data = await response.json();
+      console.log("DATA:", data);
 
+      if (!data.value || data.value.length === 0) {
+        console.log("No banner items found");
+        return;
+      }
+
+      const item = data.value[0];
+
+      const element = React.createElement(Banner, {
+        message: item.Message || "Default alert",
+        backgroundColor: item.BackgroundColor || "#330036",
+        textColor: item.TextColor,
+        fontSize: item.FontSize || 18,
+        visibleStartDate: item.StartDate || undefined
+      });
+
+      ReactDom.render(element, this._topPlaceholder.domElement);
+
+    } catch (error) {
+      console.error("Banner fetch error:", error);
+    }
   };
 }
