@@ -22,6 +22,7 @@ export default class BasicBannerApplicationCustomizer
 
   @override
   public onInit(): Promise<void> {
+    // Log to console to confirm the extension is loading
     console.log("MINIMAL BANNER LOADED");
 
     this.context.placeholderProvider.changedEvent.add(this, this._renderBanner);
@@ -38,8 +39,11 @@ export default class BasicBannerApplicationCustomizer
     }
 
     try {
+      // Replace this tenant/site URL with your own SharePoint site URL.
+      // Replace 'BannerConfig' with the name of your own SharePoint list.
+      // The column names in $select must match your list columns exactly.
       const response = await this.context.spHttpClient.get(
-        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=Title,Message&$orderby=Created desc`,
+        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=Message&$orderby=Created desc`,
         SPHttpClient.configurations.v1
       );
 
