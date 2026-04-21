@@ -9,10 +9,13 @@ import * as ReactDom from 'react-dom';
 import Banner from './components/Banner';
 import { SPHttpClient } from '@microsoft/sp-http';
 
+//fix colors not changing resulting in missing banner.
+
 export default class BasicBannerApplicationCustomizer
   extends BaseApplicationCustomizer<{
     message: string;
     backgroundColor?: string;
+    borderColor?: string;
     textColor?: string;
     fontSize?: number;
     visibleStartDate?: string;
@@ -43,7 +46,7 @@ export default class BasicBannerApplicationCustomizer
       // Replace 'BannerConfig' with the name of your own SharePoint list.
       // The column names in $select must match your list columns exactly.
       const response = await this.context.spHttpClient.get(
-        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=Message&$orderby=Created desc`,
+        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=?$select=Message,FontSize,StartDate,BannerType&$orderby=Created desc`,
         SPHttpClient.configurations.v1
       );
 
@@ -56,13 +59,11 @@ export default class BasicBannerApplicationCustomizer
       }
 
       const item = data.value[0];
-
       const element = React.createElement(Banner, {
         message: item.Message || "Default alert",
-        backgroundColor: item.BackgroundColor || "#330036",
-        textColor: item.TextColor,
-        fontSize: item.FontSize || 18,
-        visibleStartDate: item.StartDate || undefined
+        fontSize: item.FontSize ? Number(item.FontSize) : 18,
+        visibleStartDate: item.StartDate || undefined,
+        type: item.BannerType // ✅ THIS is the key fix
       });
 
       ReactDom.render(element, this._topPlaceholder.domElement);

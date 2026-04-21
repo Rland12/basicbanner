@@ -4,17 +4,15 @@ import { useState } from 'react';
 interface BannerProps {
   message: string;
   visibleStartDate?: string;
-  backgroundColor?: string;
-  textColor?: string;
   fontSize?: number;
+  type?: string;
 }
 
 const Banner = ({
   message,
   visibleStartDate,
-  backgroundColor = "#EF3054",
-  textColor = "white",
-  fontSize = 16
+  type,
+  fontSize = 18
 }: BannerProps) => {
 
   const [visible, setVisible] = useState(true);
@@ -26,8 +24,8 @@ const Banner = ({
   if (startDate && now < startDate) {
     return null;
   }
-console.log("NOW:", now);
-console.log("START:", startDate);
+  console.log("NOW:", now);
+  console.log("START:", startDate);
   if (!visible) return null;
 
   //Token parser
@@ -36,16 +34,31 @@ console.log("START:", startDate);
       .replace("{siteUrl}", window.location.origin)
       .replace("{pageUrl}", window.location.href);
   };
-
+  const getBorderColor = (type?: string) => {
+    switch (type) {
+      case "Primary": return "#ff530D";
+      case "Blue": return "#0033A0";
+      case "Yellow": return "#FFC72C";
+      case "Purple": return "#7F2268";
+      case "Gray": return "#999999";
+      default: return "#ff530D";
+    }
+  };
   return (
     <div style={{
-      background: backgroundColor,
-      color: textColor,
-      padding: "12px",
-      textAlign: "center",
-      fontWeight: "bold",
+      background: "#ffffff",
+      color: "#000000",
+      padding: "12px 16px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      fontWeight: 500,
       fontSize: `${fontSize}px`,
-      position: "relative"
+      borderLeft: `6px solid ${getBorderColor(type)}`,
+      borderRadius: "0px 0px 6px 6px",
+      marginBottom: "8px",
+      position: "relative",
+      boxShadow: "0 2px 6px rgba(0,0,0,0.05)"
     }}>
       {parseTokens(message)}
 
@@ -54,8 +67,6 @@ console.log("START:", startDate);
         style={{
           position: "absolute",
           right: "12px",
-          top: "50%",
-          transform: "translateY(-50%)",
           cursor: "pointer",
           fontWeight: "bold"
         }}
