@@ -14,11 +14,9 @@ import { SPHttpClient } from '@microsoft/sp-http';
 export default class BasicBannerApplicationCustomizer
   extends BaseApplicationCustomizer<{
     message: string;
-    backgroundColor?: string;
-    borderColor?: string;
-    textColor?: string;
     fontSize?: number;
     visibleStartDate?: string;
+    type?: string;
   }> {
 
   private _topPlaceholder: PlaceholderContent | undefined;
@@ -32,7 +30,6 @@ export default class BasicBannerApplicationCustomizer
 
     return Promise.resolve();
   }
-
   private _renderBanner = async (): Promise<void> => {
     if (!this._topPlaceholder) {
       this._topPlaceholder =
@@ -42,11 +39,8 @@ export default class BasicBannerApplicationCustomizer
     }
 
     try {
-      // Replace this tenant/site URL with your own SharePoint site URL.
-      // Replace 'BannerConfig' with the name of your own SharePoint list.
-      // The column names in $select must match your list columns exactly.
       const response = await this.context.spHttpClient.get(
-        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=?$select=Message,FontSize,StartDate,BannerType&$orderby=Created desc`,
+        `https://24gz8f.sharepoint.com/_api/web/lists/getbytitle('BannerConfig')/items?$select=Message,FontSize,StartDate,BannerType&$orderby=Created desc`,
         SPHttpClient.configurations.v1
       );
 
@@ -59,11 +53,13 @@ export default class BasicBannerApplicationCustomizer
       }
 
       const item = data.value[0];
+      console.log("ITEM:", item);
+
       const element = React.createElement(Banner, {
         message: item.Message || "Default alert",
         fontSize: item.FontSize ? Number(item.FontSize) : 18,
         visibleStartDate: item.StartDate || undefined,
-        type: item.BannerType // ✅ THIS is the key fix
+        type: item.BannerType // 🔥 adjust if needed
       });
 
       ReactDom.render(element, this._topPlaceholder.domElement);

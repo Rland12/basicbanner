@@ -51,16 +51,18 @@ const Banner = ({
       padding: "12px 16px",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "space-between",
       fontWeight: 500,
       fontSize: `${fontSize}px`,
-      borderLeft: `6px solid ${getBorderColor(type)}`,
+      border: `6px solid ${getBorderColor(type)}`,
       borderRadius: "0px 0px 6px 6px",
       marginBottom: "8px",
       position: "relative",
       boxShadow: "0 2px 6px rgba(0,0,0,0.05)"
     }}>
-      {parseTokens(message)}
+      <div style={{ flex: 1, textAlign: "center" }}>
+        {parseTokens(message)}
+      </div>
 
       <span
         onClick={() => setVisible(false)}
